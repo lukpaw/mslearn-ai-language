@@ -20,7 +20,7 @@ def main():
         ai_client = TextAnalyticsClient(endpoint=ai_endpoint, credential=credential)
 
         # Analyze each text file in the reviews folder
-        reviews_folder = 'reviews'
+        reviews_folder = './reviews'
         for file_name in os.listdir(reviews_folder):
             # Read the file contents
             print('\n-------------\n' + file_name)
@@ -28,7 +28,6 @@ def main():
             print('\n' + text)
 
             # Analyze each text file in the reviews folder
-            reviews_folder = 'D:\\develop\\PycharmProjects\\mslearn-ai-language\\Labfiles\\01-analyze-text\\Python\\text-analysis\\reviews'
             for file_name in os.listdir(reviews_folder):
                 # Read the file contents
                 print('\n-------------\n' + file_name)
