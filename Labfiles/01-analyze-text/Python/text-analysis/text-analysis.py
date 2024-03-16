@@ -5,8 +5,6 @@ import os
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.textanalytics import TextAnalyticsClient
 
-# pip install azure-ai-textanalytics==5.3.0
-# pip install python-dotenv
 
 def main():
     try:
@@ -27,13 +25,6 @@ def main():
             text = open(os.path.join(reviews_folder, file_name), encoding='utf8').read()
             print('\n' + text)
 
-            # Analyze each text file in the reviews folder
-            for file_name in os.listdir(reviews_folder):
-                # Read the file contents
-                print('\n-------------\n' + file_name)
-                text = open(os.path.join(reviews_folder, file_name), encoding='utf8').read()
-                print('\n' + text)
-
             # Get language
             detectedLanguage = ai_client.detect_language(documents=[text])[0]
             print('\nLanguage: {}'.format(detectedLanguage.primary_language.name))
@@ -48,6 +39,7 @@ def main():
                 print("\nKey Phrases:")
                 for phrase in phrases:
                     print('\t{}'.format(phrase))
+
             # Get entities
             entities = ai_client.recognize_entities(documents=[text])[0].entities
             if len(entities) > 0:
