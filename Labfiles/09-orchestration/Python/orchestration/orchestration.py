@@ -43,9 +43,8 @@ def main():
             # Send analysis request and get response
             response = client.analyze_conversation(data)
 
-            # Assuming response is a dictionary (check the library documentation)
             if isinstance(response, dict):
-                result = response  # Access the response data directly
+                result = response
             else:
                 raise Exception("Unexpected response format")
 
