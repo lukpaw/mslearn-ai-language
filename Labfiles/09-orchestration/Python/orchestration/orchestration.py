@@ -42,23 +42,23 @@ def main():
 
             # Send analysis request and get response
             response = client.analyze_conversation(data)
+            orchestration_result = response["result"]
+            orchestration_prediction = orchestration_result["prediction"]
+            orchestration_top_intent = orchestration_prediction["topIntent"]
+            orchestration_target_project_kind = orchestration_prediction["intents"][orchestration_top_intent][
+                "targetProjectKind"]
 
-            if isinstance(response, dict):
-                result = response
-            else:
-                raise Exception("Unexpected response format")
-
-            # Extract top intent and orchestration prediction
-            conversational_task_result = result["result"]
-            orchestration_prediction = conversational_task_result["prediction"]
-            top_intent = orchestration_prediction["topIntent"]
-
-            print(f"The top intent was {top_intent}\n")
-            print(f"The result from the connected project is as follows:\n")
+            print(f"--- Orchestrator ---")
+            print(f"orchestration_result:\n{orchestration_result}")
+            print(f"orchestration_prediction: {orchestration_prediction}")
+            print(f"orchestration_top_intent: {orchestration_top_intent}")
+            print(f"orchestration_target_project_kind: {orchestration_target_project_kind}")
+            print(f"--- Orchestrator return \"result\" from connect project ---")
+            print(f"The response is:\n{orchestration_prediction['intents'][orchestration_top_intent]['result']}\n")
 
             # Handle Conversation language understanding response
-            if orchestration_prediction["intents"][top_intent]["targetProjectKind"] == "Conversation":
-                conversation_prediction = orchestration_prediction["intents"][top_intent]["result"]["prediction"]
+            if orchestration_prediction["intents"][orchestration_top_intent]["targetProjectKind"] == "Conversation":
+                conversation_prediction = orchestration_prediction["intents"][orchestration_top_intent]["result"]["prediction"]
 
                 print(f"\tTop Intent: {conversation_prediction['topIntent']}")
                 print(f"\tIntents:")
@@ -85,8 +85,8 @@ def main():
                                 print()
 
             # Handle Custom question answering response
-            elif orchestration_prediction["intents"][top_intent]["targetProjectKind"] == "QuestionAnswering":
-                question_answering_response = orchestration_prediction["intents"][top_intent]["result"]
+            elif orchestration_prediction["intents"][orchestration_top_intent]["targetProjectKind"] == "QuestionAnswering":
+                question_answering_response = orchestration_prediction["intents"][orchestration_top_intent]["result"]
 
                 print("\tAnswers: \n")
                 for answer in question_answering_response["answers"]:
@@ -96,7 +96,7 @@ def main():
                     print()
             else:
                 # Handle the case where intents or top_intent is invalid
-                print(f"Warning: 'intents' or '{top_intent}' not found in orchestration_prediction")
+                print(f"Warning: 'intents' or '{orchestration_top_intent}' not found in orchestration_prediction")
 
     except Exception as ex:
         print(ex)
